@@ -17,7 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->get();
+        $categories = Category::with( ['childCategories'=> function($q){
+            $q->with('productes')->withCount('productes');
+        }] )->withCount('productes')->whereNull('parent_id')->orderBy('id', 'desc')->get();
+
         return view('backend.category.index', compact('categories'));
     }
 
@@ -56,7 +59,6 @@ class CategoryController extends Controller
         }
 
         $data->name = $request->name;
-        $data->slug = Str::slug($request->name);
         $data->description = $request->description;
         $data->parent_id = $request->parent;
         $data->image = $image_name;

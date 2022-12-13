@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -16,4 +17,18 @@ class Category extends Model
         'status',
         'image',
     ];
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
+
+    public function productes(){
+        return $this->belongsToMany(Product::class);
+    }
+
+    public function childCategories(){
+        return $this->hasMany(Category::class, 'parent_id')->whereNotNull('parent_id');
+    }
 }

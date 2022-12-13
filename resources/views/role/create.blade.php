@@ -26,7 +26,7 @@
                     <h4>Permission</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('backend.permission.store')}}" method="POST">
+                    <form action="{{route('backend.role.permission.store')}}" method="POST">
                         @csrf
                         <input type="text" class="form-control" placeholder="Add Permission" name="name" value="{{old('permissoin')}}">
                         <button type="submit" class="btn btn-primary btn-sm mt-3" >Add + </button>

@@ -103,21 +103,22 @@
                                 </div>
                             </li>
                         </ul>
-
+                       
                         <ul class="nav navbar-nav d-none d-sm-flex border-left navbar-height align-items-center">
                             <li class="nav-item dropdown">
                                 <a href="#account_menu" class="nav-link dropdown-toggle" data-toggle="dropdown"
                                     data-caret="false">
                                     <span class="mr-1 d-flex-inline">
-                                        <span class="text-light">Adrian D.</span>
+                                        <span class="text-light">{{ auth()->user()->name }}</span>
                                     </span>
-                                    <img src="assets/images/avatar/demi.png" class="rounded-circle" width="32"
-                                        alt="Frontted">
+                                    <img src="{{Avatar::create(auth()->user()->name )->setDimension(40)->setFontSize(16)->toBase64()}}" alt="">
+                                    {{-- <img src="assets/images/avatar/demi.png" class="rounded-circle" width="32" 
+                                        alt="Frontted">--}}
                                 </a>
                                 <div id="account_menu" class="dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-item-text dropdown-item-text--lh">
-                                        <div><strong>Adrian Demian</strong></div>
-                                        <div class="text-muted">@adriandemian</div>
+                                        <div><strong>{{ auth()->user()->name }}</strong></div>
+                                        <div class="text-muted">{{ auth()->user()->email }}</div>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item active" href="index.html"><i
@@ -171,22 +172,37 @@
                                     </a>
                                 </li>
 
-                                <li class="sidebar-menu-item {{Route::is('backend.category*') ? 'active open' : ''}}">
+                                <li class="sidebar-menu-item {{Route::is(['backend.product.*', 'backend.category.*', 'backend.color.*', 'backend.size.*']) ? 'active open' : ''}}">
                                     <a class="sidebar-menu-button" data-toggle="collapse" href="#category_menu">
                                         <i
                                             class="sidebar-menu-icon sidebar-menu-icon--left material-icons">slideshow</i>
-                                        <span class="sidebar-menu-text">Category</span>
+                                        <span class="sidebar-menu-text">Product</span>
                                         <span class="ml-auto sidebar-menu-toggle-icon"></span>
                                     </a>
                                     <ul class="sidebar-submenu collapse" id="category_menu">
-                                        <li class="sidebar-menu-item  {{Route::is('backend.category.create') ? 'active' : ''}}">
-                                            <a class="sidebar-menu-button" href="{{route('backend.category.index')}}">
-                                                <span class="sidebar-menu-text">Add Category</span>
+                                        <li class="sidebar-menu-item {{Route::is('backend.product.create') ? 'active' : ''}}">
+                                            <a class="sidebar-menu-button" href="{{route('backend.product.create')}}">
+                                                <span class="sidebar-menu-text">Add Product</span>
                                             </a>
                                         </li>
-                                        <li class="sidebar-menu-item {{Route::is('backend.category.index') ? 'active' : ''}}">
+                                        <li class="sidebar-menu-item {{Route::is('backend.product.index') ? 'active' : ''}}">
+                                            <a class="sidebar-menu-button" href="{{route('backend.product.index')}}">
+                                                <span class="sidebar-menu-text">All Products</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-menu-item  {{Route::is('backend.category.index') ? 'active' : ''}}">
                                             <a class="sidebar-menu-button" href="{{route('backend.category.index')}}">
-                                                <span class="sidebar-menu-text">All Category</span>
+                                                <span class="sidebar-menu-text">Product Category</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-menu-item  {{Route::is('backend.color.index') ? 'active' : ''}}">
+                                            <a class="sidebar-menu-button" href="{{route('backend.color.index')}}">
+                                                <span class="sidebar-menu-text">Product Color</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-menu-item  {{Route::is('backend.size.index') ? 'active' : ''}}">
+                                            <a class="sidebar-menu-button" href="{{route('backend.size.index')}}">
+                                                <span class="sidebar-menu-text">Product Size</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -240,15 +256,20 @@
                             </ul>
                         
                             <div class="d-flex align-items-center sidebar-p-a border-bottom sidebar-account">
-                                <a href="profile.html"
+                                <a href="#"
                                     class="flex d-flex align-items-center text-underline-0 text-body">
                                     <span class="avatar avatar-sm mr-2">
-                                        <img src="assets/images/avatar/demi.png" alt="avatar"
-                                            class="avatar-img rounded-circle">
+                                        {{-- <img src="assets/images/avatar/demi.png" alt="avatar"
+                                            class="avatar-img rounded-circle"> --}}
+                                        <img src="{{Avatar::create(auth()->user()->name )->setDimension(40)->setFontSize(16)->toBase64()}}" alt="">
                                     </span>
                                     <span class="flex d-flex flex-column">
-                                        <strong>Adrian Demian</strong>
-                                        <small class="text-muted text-uppercase">Site Manager</small>
+                                        <strong>{{ auth()->user()->name }}</strong>
+                                        <small class="text-muted text-uppercase">
+                                            @foreach (auth()->user()->roles as $role)
+                                                {{ $role->name}}
+                                            @endforeach
+                                        </small>
                                     </span>
                                 </a>
                                 <div class="dropdown ml-auto">
@@ -256,8 +277,8 @@
                                         class="text-muted"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <div class="dropdown-item-text dropdown-item-text--lh">
-                                            <div><strong>Adrian Demian</strong></div>
-                                            <div>@adriandemian</div>
+                                            <div><strong>{{ auth()->user()->name }}</strong></div>
+                                            <div>{{ auth()->user()->email }}</div>
                                         </div>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item active" href="index.html">Dashboard</a>
